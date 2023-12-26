@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo List with Popup Notification</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      margin: 100px auto;
+      background-color: purple;
+    }
+
+    #todo-container {
+      width: 300px;
+      margin: 0 auto;
+    }
+
+    #todo-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .todo-item {
+      display: flex;
+      justify-content: space-between;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      margin: 5px 0;
+      padding: 10px;
+    }
+
+    .delete-button {
+      background-color: #ff6666;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    #popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+<div id="todo-container">
+  <h2>Todo List</h2>
+  <ul id="todo-list"></ul>
+  <input type="text" id="newTodo" placeholder="Add a new task">
+  <button onclick="addTodo()">Add Task</button>
+</div>
+
+<div id="popup">
+  <p id="popup-text"></p>
+  <button onclick="closePopup()">Close</button>
+</div>
+
+<script>
+  function addTodo() {
+    const todoText = document.getElementById('newTodo').value;
+
+    if (todoText.trim() !== '') {
+      const todoList = document.getElementById('todo-list');
+
+      const listItem = document.createElement('li');
+      listItem.className = 'todo-item';
+
+      const textNode = document.createTextNode(todoText);
+      listItem.appendChild(textNode);
+
+      const deleteButton = document.createElement('button');
+      deleteButton.className = 'delete-button';
+      deleteButton.textContent = 'Delete';
+      deleteButton.onclick = function () {
+        listItem.remove();
+        showPopup('Task deleted successfully.');
+      };
+
+      listItem.appendChild(deleteButton);
+
+      todoList.appendChild(listItem);
+
+      // Clear input field after adding a todo
+      document.getElementById('newTodo').value = '';
+
+      showPopup('Task added successfully.');
+    }
+  }
+
+  function showPopup(message) {
+    const popupText = document.getElementById('popup-text');
+    popupText.textContent = message;
+
+    const popup = document.getElementById('popup');
+    popup.style.display = 'block';
+
+    // Close the popup after 3 seconds
+    setTimeout(() => {
+      closePopup();
+    }, 3000);
+  }
+
+  function closePopup() {
+    const popup = document.getElementById('popup');
+    popup.style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
+
